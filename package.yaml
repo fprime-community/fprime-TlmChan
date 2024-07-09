@@ -1,0 +1,15 @@
+package_info:
+  id: mosallaei/fprime-TlmChan
+  name: TlmChan
+  description: F Prime package for sending telemetry as channels
+  author: Ali Mosallaei
+  repo: # fill this in with a link to the git repo
+  version: 0.0.1
+
+fprime_info:
+  built-with: 3.4.4
+  compatible-with:
+    - 3.4.4 
+
+config_objects:
+  - Telemetry/{{cookiecutter.td_name}}TopologyDefs.hpp
