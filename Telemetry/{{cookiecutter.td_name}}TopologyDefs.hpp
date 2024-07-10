@@ -5,15 +5,13 @@ td_name is the name of the topology that is instantiated in your main deployment
 #ifndef TELEMETRY_DEFS_HPP
 #define TELEMETRY_DEFS_HPP
 
-namespace Telemetry {
-    struct TelemetryState {
-        /* include any variables that are needed for 
-        configuring/starting/tearing down the topology */
-    };
-    struct TopologyState {
-        TelemetryState Telemetry_state;
-    };
-}
+struct TelemetryState {
+    /* include any variables that are needed for 
+    configuring/starting/tearing down the topology */
+};
+struct TopologyState {
+    TelemetryState Telemetry_state;
+};
 
 namespace GlobalDefs {
     namespace PingEntries {
