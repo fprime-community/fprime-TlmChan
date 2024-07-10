@@ -1,56 +1,63 @@
 # Subtopology `Telemetry`
 
-Telemetry send subtopology
+Subtopology that instantiates a local `tlmSend` that depends on the `Svc::TlmChan` component.
 
 > Utilizes the [F Prime Subtopology autocoder](https://github.com/mosa11aei/fprime-subtopology-tool).
 
-## Related Diagrams
-Add any related diagrams here
-
-## Requirements
-Add requirements in the chart below
-| Name | Description | Validation |
-|---|---|---|
-|---|---|---|
-
 ## Instantiation
 
-```
-# TODO: EDIT THIS
+In your main deployment module, in `topology.fpp`, add the following:
 
-topology Inst {}
-@<! is topology Telemetry base id 0xAAAA with {
-@<! # fill in as appropriate    
-@<! }
+```
+topology Tlm {}
+@<! is Telemetry.Telemetry base id 0x1111
 ```
 
-## Redefine-able Instances
-| Instance name | Component |
-|---|---|
-|---|---|
+Then, in the main deployment topology, in `topology.fpp`, add the following:
+
+```
+import Tlm
+instance Telemetry.Input # input interface
+instance Telemetry.Output # output interface
+```
+
+Lastly, we want to add our interface connection graph, like so:
+
+```
+connections Interface_Tlm {
+    rateGroup1.RateGroupMemberOut[0] -> Telemetry.Input.Run
+    Telemetry.Output.PktSend_out -> comQueue.comQueueIn[1]
+}
+```
+
+## Utilization
+
+See the [pdd.md](../../docs/pdd.md) for how to get the fillables for the config objects. Get the outputs of them by running `fppm config --apply mosallaei/TlmChan`. Then:
+
+- `TopologyDefs.hpp` needs to be moved into the `Top/` folder of your main deployment
 
 ## Subtopology Interface
 
-**Input interface instance**: `module.NameOfInputInterface`
-**Output interface instance**: `module.NameOfOutputInterface`
+**Input interface instance**: `TelemetryInterface.Input` \
+**Output interface instance**: `TelemetryInterface.Output`
 
 ### Input Interface
 
-Going into `Telemetry`.
+Going into subtopology `Telemetry`.
 
 | Input port | Output port pair | Type      |
 | ---------- | ---------------- | --------- |
-| clock      | clock_in         | Svc.Sched |
+| Run      | Run_in         | Svc.Sched |
 
 ### Output Interface
 
-Going out of `Telemetry`.
+Going out of subtopology `Telemetry`.
 
 | Output port | Input port pair  | Type      |
 | ----------- | ---------------- | --------- |
-| clock_out   | clock            | Svc.Sched |
+| PktSend_out   | PktSend            | Fw.Com |
 
 ## Change Log
 | Date | Description |
 |---|---|
-|---| Initial Draft |
+| 10 JUL 2024 | Initial Draft |
